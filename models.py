@@ -40,13 +40,13 @@ class Dish(db.Model):
     __tablename__ = 'dishes'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    image = Column(String)
-    category = Column(String)
+    name = Column(String, nullable=False)
+    image = Column(String, nullable=False)
+    category = Column(String, nullable=False)
     label = Column(String)
-    price = Column(Float)
+    price = Column(Float, nullable=False)
     featured = Column(Boolean)
-    description = Column(String)
+    description = Column(String,)
 
     def __init__(self, name, category, label, price, featured, description):
         self.name = name
