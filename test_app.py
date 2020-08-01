@@ -32,11 +32,69 @@ class ConfusionTestCase(unittest.TestCase):
     def test_retrieve_all_dishes(self):
         res = self.client().get('/dishes')
         data = json.loads(res.data)
-        print('dishes', data['dishes'])
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['dishes']))
+
+    def test_400_create_dish_with_missing_args(self):
+        res = self.client().post('/dishes', json={'name': 'test_dish'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Bad Request')
+
+    def test_create_dish(self):
+        res = self.client().post('/dishes', json={
+            'name': 'tname', 
+            'image': 'timage',
+            'category': 'tcategory',
+            'price': 2.55
+            }
+        )
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['created'])
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['dishes']))
+
+    def test_404_update_price_for_not_exist_book(self):
+        res = self.client().patch('/dishes/1000', json={'price': 500})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 404)
+        self.assertEqual(data['message'], 'Resource Not Found')
+
+    def test_update_dish_price(self):
+        res = self.client().patch('/dishes/1', json={'price': 1.23})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['dish']['price'], 1.23)
+
+    def test_422_delete_dish_not_exist(self):
+        res = self.client().delete('/dishes/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not Processable')
+        self.assertEqual(data['error'], 422)
+
+    def test_delete_dish(self):
+        res = self.client().delete('/dishes/2')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['deleted'], 2)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['dishes']))
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
