@@ -46,15 +46,7 @@ class Dish(db.Model):
     label = Column(String)
     price = Column(Float, nullable=False)
     featured = Column(Boolean)
-    description = Column(String,)
-
-    def __init__(self, name, category, label, price, featured, description):
-        self.name = name
-        self.category = category
-        self.label = label
-        self.price = price
-        self.featured = featured
-        self.description = description
+    description = Column(String)
 
     def insert(self):
         db.session.add(self)
