@@ -60,6 +60,20 @@ class ConfusionTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['dishes']))
 
+    def test_405_creation_dish_not_allowed(self):
+        res = self.client().post('/dishes/10', json={
+            'name': 'tname', 
+            'image': 'timage',
+            'category': 'tcategory',
+            'price': 2.55
+            })
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 405)
+        self.assertEqual(data['message'], 'Method Not Allowed')
+
     def test_404_update_price_for_not_exist_book(self):
         res = self.client().patch('/dishes/1000', json={'price': 500})
         data = json.loads(res.data)
