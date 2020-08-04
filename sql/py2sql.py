@@ -283,7 +283,7 @@ def is_float(s):
     return re.match(r'^-?\d+(?:\.\d+)?$', str(s)) is not None
 
 # setting table name
-table_name = 'dishes'
+table_name = 'promotions'
 
 # setting table cols
 table_cols = []
