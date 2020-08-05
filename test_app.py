@@ -29,6 +29,7 @@ class ConfusionTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
 
+    ########## DISHES ################
     def test_retrieve_all_dishes(self):
         res = self.client().get('/dishes')
         data = json.loads(res.data)
@@ -108,6 +109,57 @@ class ConfusionTestCase(unittest.TestCase):
         self.assertEqual(data['deleted'], 2)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['dishes']))
+
+    # ####### PROMOTIONS ###################
+    def test_retrieve_all_promotions(self):
+        res = self.client().get('/promotions')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['promotions']))
+
+    def test_create_promotion(self):
+        res = self.client().post('/promotions', json={
+            'name': 'tname', 
+            'image': 'timage',
+            'price': 2.55,
+            'description': 'tdesc'
+            }
+        )
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['created'])
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['promotions']))
+
+    def test_400_create_promotion_with_missing_args(self):
+        res = self.client().post('/promotions', json={'name': 'test_promotion'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Bad Request')
+
+    def test_422_delete_promotion_not_exist(self):
+        res = self.client().delete('/promotions/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Not Processable')
+        self.assertEqual(data['error'], 422)
+
+    def test_delete_promotion(self):
+        res = self.client().delete('/promotions/1')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['deleted'], 1)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['promotions']))
+
 
 
 # Make the tests conveniently executable
