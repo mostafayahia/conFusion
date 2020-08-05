@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import Dish, setup_db, rollback, close_connection
+from models import Dish, setup_db, rollback, close_connection, Promotion
 import sys
 
 
@@ -12,6 +12,7 @@ def create_app(test_config=None):
     CORS(app)
     setup_db(app)
 
+    # ======= Dishes ============
     @app.route('/dishes', methods=['GET'])
     def retrieve_dishes():
         try:
@@ -115,6 +116,73 @@ def create_app(test_config=None):
         finally:
             close_connection()
 
+    ##### Promotions ############
+    @app.route('/promotions', methods=['GET'])
+    def retrieve_promotions():
+        return jsonify({
+            'success': True,
+            'promotions': [ promotion.format() for promotion in Promotion.query.all()]
+        })
+
+    @app.route('/promotions', methods=['POST'])
+    def create_promotion():
+        body = request.get_json()
+
+        # if body not exist, will be considered bad request
+        if not body:
+            abort(400)
+
+        # if any of not null args not exist in the body it will be considered a bad request
+        for arg in ['name', 'image', 'price', 'description']:
+            if arg not in body:
+                abort(400)
+        
+        # extract args
+        name = body.get('name', None)
+        image = body.get('image', None)
+        price = body.get('price', None)
+        description = body.get('description', None)
+
+        try:
+            promotion = Promotion(name=name, image=image, price=price, description=description)
+            promotion.insert()
+            promotion_id = promotion.id
+            promotions = [promotion.format() for promotion in Promotion.query.all()]
+            return jsonify({
+                'success': True,
+                'created': promotion_id,
+                'promotions': promotions
+            })
+
+        except:
+            print(sys.exc_info())
+            rollback()
+            abort(422)
+        finally:
+            close_connection()
+
+    @app.route('/promotions/<int:promotion_id>', methods=['DELETE'])
+    def remove_promotion(promotion_id):
+        promotion = Promotion.query.filter(Promotion.id == promotion_id).one_or_none()
+
+        # if promotion with the given promotion_id, Will be consider unprocessable request
+        if not promotion: abort(422)
+
+        try:
+            promotion.delete()
+            promotion_id = promotion.id
+            return jsonify({
+                'success': True,
+                'deleted': promotion_id,
+                'promotions': [promotion.format() for promotion in Promotion.query.all()]
+            })
+        except:
+            print(sys.exc_info())
+            rollback()
+            abort(422)
+        finally:
+            close_connection()
+
     # ======Error handlers==========
     
     @app.errorhandler(404)
@@ -148,6 +216,14 @@ def create_app(test_config=None):
             'error': 500,
             'message': 'Internal Server Error'
         }), 500
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return jsonify({
+            'success': False,
+            'error': 405,
+            'message': 'Method Not Allowed'
+        }), 405
 
     return app
 

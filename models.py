@@ -70,3 +70,39 @@ class Dish(db.Model):
             'featured': self.featured,
             'description': self.description
         }
+
+class Promotion(db.Model):
+    """
+    Promotion
+    """
+    __tablename__ = 'promotions'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    image = Column(String, nullable=False)
+    label = Column(String)
+    price = Column(Float, nullable=False)
+    featured = Column(Boolean)
+    description = Column(String, nullable=False)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'image': self.image,
+            'label': self.label,
+            'price': self.price,
+            'featured': self.featured,
+            'description': self.description
+        }
