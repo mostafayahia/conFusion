@@ -29,6 +29,8 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
+    # set default value to featured column
+    op.execute('ALTER TABLE promotions ALTER COLUMN featured SET DEFAULT false;')
 
 
 def downgrade():

@@ -30,6 +30,8 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
+    # set default value to featured column
+    op.execute('ALTER TABLE dishes ALTER COLUMN featured SET DEFAULT false;')
 
 
 def downgrade():
