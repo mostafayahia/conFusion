@@ -160,6 +160,48 @@ class ConfusionTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['promotions']))
 
+    ############ COMMENTS ########################
+    def test_retrieve_all_comments_for_specific_dish_id(self):
+        res = self.client().get('/dishes/1/comments')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['comments']))
+
+    def test_404_retrieve_comments_for_not_exist_dish(self):
+        res = self.client().get('/dishes/1000/comments')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['error'], 404)
+        self.assertEqual(data['message'], 'Resource Not Found')
+
+    def test_create_comment(self):
+        res = self.client().post('/comments', json={
+            'dishid': 1, 
+            'rating': 5,
+            'comment': 'tcomment',
+            'author': 'tauthor',
+            'date': '2020-01-02T17:57:28.556094'
+            }
+        )
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['created'])
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['comments']))
+
+    def test_400_create_comment_with_missing_args(self):
+        res = self.client().post('/comments', json={'name': 'test_comment'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Bad Request')
+
 
 
 # Make the tests conveniently executable

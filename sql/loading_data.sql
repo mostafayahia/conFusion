@@ -15,4 +15,29 @@ DELETE FROM promotions;
 
 INSERT INTO promotions (name, image, label, price, featured,  description) VALUES ('Weekend Grand Buffet', 'images/buffet.png', 'New', 19.99, 'True',  'Featuring mouthwatering combinations with a choice of five different salads, six enticing appetizers, six main entrees and five choicest desserts. Free flowing bubbly and soft drinks. All for just $19.99 per person ');
 
+-- COMMENTS
+-- ###########
+
+DELETE FROM comments;
+
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (1, 5, 'Imagine all the eatables, living in conFusion!', 'John Lemon',  '2012-10-16T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (1, 4, 'Sends anyone to heaven, I wish I could get my mother-in-law to eat it!', 'Paul McVites',  '2014-09-05T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (1, 3, 'Eat it, just eat it!', 'Michael Jaikishan',  '2015-02-13T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (1, 4, 'Ultimate, Reaching for the stars!', 'Ringo Starry',  '2013-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (1, 2, 'It is your birthday, we are gonna party!', '25 Cent',  '2011-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (2, 5, 'Imagine all the eatables, living in conFusion!', 'John Lemon',  '2012-10-16T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (2, 4, 'Sends anyone to heaven, I wish I could get my mother-in-law to eat it!', 'Paul McVites',  '2014-09-05T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (2, 3, 'Eat it, just eat it!', 'Michael Jaikishan',  '2015-02-13T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (2, 4, 'Ultimate, Reaching for the stars!', 'Ringo Starry',  '2013-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (2, 2, 'It is your birthday, we are gonna party!', '25 Cent',  '2011-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (3, 5, 'Imagine all the eatables, living in conFusion!', 'John Lemon',  '2012-10-16T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (3, 4, 'Sends anyone to heaven, I wish I could get my mother-in-law to eat it!', 'Paul McVites',  '2014-09-05T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (3, 3, 'Eat it, just eat it!', 'Michael Jaikishan',  '2015-02-13T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (3, 4, 'Ultimate, Reaching for the stars!', 'Ringo Starry',  '2013-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (3, 2, 'It is your birthday, we are gonna party!', '25 Cent',  '2011-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (4, 5, 'Imagine all the eatables, living in conFusion!', 'John Lemon',  '2012-10-16T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (4, 4, 'Sends anyone to heaven, I wish I could get my mother-in-law to eat it!', 'Paul McVites',  '2014-09-05T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (4, 3, 'Eat it, just eat it!', 'Michael Jaikishan',  '2015-02-13T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (4, 4, 'Ultimate, Reaching for the stars!', 'Ringo Starry',  '2013-12-02T17:57:28.556094');
+INSERT INTO comments (dishId, rating, comment, author,  date) VALUES (4, 2, 'It is your birthday, we are gonna party!', '25 Cent',  '2011-12-02T17:57:28.556094');
 
