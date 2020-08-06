@@ -1,7 +1,7 @@
 import os
 from sqlalchemy import (
-    Column, String, Integer, create_engine, ForeignKey,
-    Float, Boolean
+    Column, String, Integer, create_engine, Float,
+    Boolean, DateTime, ForeignKey
 )
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -105,4 +105,39 @@ class Promotion(db.Model):
             'price': self.price,
             'featured': self.featured,
             'description': self.description
+        }
+
+class Comment(db.Model):
+    """
+    Comment
+    """
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True)
+    dishid = Column(Integer)
+    ForeignKey(column=dishid, ondelete='SET NULL')
+    rating = Column(Float, nullable=False)
+    comment = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    date = Column(DateTime, nullable=False)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'dishid': self.dishid,
+            'rating': self.rating,
+            'comment': self.comment,
+            'author': self.author,
+            'date': self.date
         }

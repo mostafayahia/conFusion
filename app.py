@@ -2,7 +2,10 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import Dish, setup_db, rollback, close_connection, Promotion
+from models import (
+    Dish, setup_db, rollback, close_connection, 
+    Promotion, Comment
+)
 import sys
 
 
@@ -176,6 +179,58 @@ def create_app(test_config=None):
                 'deleted': promotion_id,
                 'promotions': [promotion.format() for promotion in Promotion.query.all()]
             })
+        except:
+            print(sys.exc_info())
+            rollback()
+            abort(422)
+        finally:
+            close_connection()
+
+
+    ##### Comments ############
+    @app.route('/dishes/<int:dish_id>/comments', methods=['GET'])
+    def retrieve_commments_for_certain_dish(dish_id):
+        dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
+
+        # if dish not exist, Will be considered 404 error
+        if not dish: abort(404)
+
+        return jsonify({
+            'success': True,
+            'comments': [ comment.format() for comment in Comment.query.filter(Comment.dishid == dish_id).all()]
+        })
+
+    @app.route('/comments', methods=['POST'])
+    def create_comment():
+        body = request.get_json()
+
+        # if body not exist, will be considered bad request
+        if not body:
+            abort(400)
+
+        # if any of not null args not exist in the body it will be considered a bad request
+        for arg in ['dishid', 'rating', 'comment', 'author', 'date']:
+            if arg not in body:
+                abort(400)
+        
+        # extract args
+        dishid = body.get('dishid', None)
+        rating = body.get('rating', None)
+        comment = body.get('comment', None)
+        author = body.get('author', None)
+        date = body.get('date', None)
+
+        try:
+            comment = Comment(dishid=dishid, rating=rating, comment=comment, author=author, date=date)
+            comment.insert()
+            comment_id = comment.id
+            comments = [comment.format() for comment in Comment.query.all()]
+            return jsonify({
+                'success': True,
+                'created': comment_id,
+                'comments': comments
+            })
+
         except:
             print(sys.exc_info())
             rollback()
