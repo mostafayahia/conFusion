@@ -7,6 +7,7 @@ from models import (
     Promotion, Comment
 )
 import sys
+from auth import requires_auth, AuthError
 
 
 def create_app(test_config=None):
@@ -30,7 +31,8 @@ def create_app(test_config=None):
 
 
     @app.route('/dishes', methods=['POST'])
-    def create_dish():
+    @requires_auth('post:dishes')
+    def create_dish(jwt_payload):
         body = request.get_json()
 
         # if body not exist, will be considered bad request
@@ -67,7 +69,8 @@ def create_app(test_config=None):
             close_connection()
 
     @app.route('/dishes/<int:dish_id>', methods=['PATCH'])
-    def update_dish_price(dish_id):
+    @requires_auth('patch:dishes')
+    def update_dish_price(jwt_payload, dish_id):
         dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
 
         # if there is no dish exist for dish_id, Will be consider 404 error
@@ -98,7 +101,8 @@ def create_app(test_config=None):
             close_connection()
 
     @app.route('/dishes/<int:dish_id>', methods=['DELETE'])
-    def remove_dish(dish_id):
+    @requires_auth('delete:dishes')
+    def remove_dish(jwt_payload, dish_id):
         dish = Dish.query.filter(Dish.id == dish_id).one_or_none()
 
         # if dish with the given dish_id, Will be consider unprocessable request
@@ -128,7 +132,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/promotions', methods=['POST'])
-    def create_promotion():
+    @requires_auth('post:promotions')
+    def create_promotion(jwt_payload):
         body = request.get_json()
 
         # if body not exist, will be considered bad request
@@ -165,7 +170,8 @@ def create_app(test_config=None):
             close_connection()
 
     @app.route('/promotions/<int:promotion_id>', methods=['DELETE'])
-    def remove_promotion(promotion_id):
+    @requires_auth('delete:promotions')
+    def remove_promotion(jwt_payload, promotion_id):
         promotion = Promotion.query.filter(Promotion.id == promotion_id).one_or_none()
 
         # if promotion with the given promotion_id, Will be consider unprocessable request
@@ -201,7 +207,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/comments', methods=['POST'])
-    def create_comment():
+    @requires_auth('post:comments')
+    def create_comment(jwt_payload):
         body = request.get_json()
 
         # if body not exist, will be considered bad request
@@ -239,6 +246,14 @@ def create_app(test_config=None):
             close_connection()
 
     # ======Error handlers==========
+
+    @app.errorhandler(AuthError)
+    def auth_error(auth_error):
+        return jsonify({
+            'success': False,
+            'error': auth_error.status_code,
+            'message': auth_error.error
+        }), auth_error.status_code
     
     @app.errorhandler(404)
     def not_found(error):
