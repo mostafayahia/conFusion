@@ -18,9 +18,11 @@ class ConfusionTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
+
+        # TODO: setup your database url for testing here
         self.database_name = "confusion_test"
-        # TODO: setup you database url for testing here
         self.database_path = "postgres://{}:{}@{}/{}".format('yahia', 'password', 'localhost:5432', self.database_name)
+        
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context
