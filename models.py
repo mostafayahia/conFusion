@@ -71,6 +71,7 @@ class Dish(db.Model):
             'description': self.description
         }
 
+
 class Promotion(db.Model):
     """
     Promotion
@@ -106,6 +107,7 @@ class Promotion(db.Model):
             'featured': self.featured,
             'description': self.description
         }
+
 
 class Comment(db.Model):
     """

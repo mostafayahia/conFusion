@@ -1,7 +1,8 @@
-#----------------------------------------------------------------
+# ----------------------------------------------------------------
 # using this code to convert dummy data to print sql statements
-#----------------------------------------------------------------
+# ----------------------------------------------------------------
 
+import re
 data = {
     "dishes": [
         {
@@ -274,21 +275,24 @@ data = {
     ]
 }
 
-import re
 
 '''
 return true if s arg is float otherwise return false
 '''
+
+
 def is_float(s):
     return re.match(r'^-?\d+(?:\.\d+)?$', str(s)) is not None
+
 
 # setting table name
 table_name = 'comments'
 
 # setting table cols
 table_cols = []
-for col in data[table_name][0]: table_cols.append(col)
-table_cols.remove('id') # remove id (already autoincrement)
+for col in data[table_name][0]:
+    table_cols.append(col)
+table_cols.remove('id')  # remove id (already autoincrement)
 
 # construct sql statement --> INSERT INTO dishes (name, id) VALUES ({}, {});
 sql_statement = f'INSERT INTO {table_name} (' +\
@@ -297,7 +301,7 @@ sql_statement = sql_statement.format(*table_cols)
 sql_statement += '{}, ' * (len(table_cols) - 1) + ' {});'
 
 # print full sql statement
-for r in data[table_name]: 
+for r in data[table_name]:
     values = []
     for col in table_cols:
         val = r[col]
