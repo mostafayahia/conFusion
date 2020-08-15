@@ -32,7 +32,7 @@ The default url: `https://confusion20.herokuapp.com/`
 - then you can run the following commands (from the root directory)
 ```
 source ./setup.sh
-psql confusion_test < ./sql/test_loading_data.sql // Be sure confusion_test db already exist
+psql confusion_test < ./sql/test_loading_data.sql # Be sure confusion_test db already exist
 python3 test_app.py
 ```
 
