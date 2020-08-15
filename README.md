@@ -45,6 +45,7 @@ Base URL: you can run locally `http://localhost:5000` or live api `https://confu
    - User: has a permission to create a comment for a certain dish.
    - Chef: has the permissions of the User in addition to creating, deleting , modifying the price of any dish.
    - Director: has the permissions of the Chef in addition to creating, deleteing any promotion.
+ - you can use auth0 env variables in `./setup.sh` and [auth0 docs link](https://auth0.com/docs/api/authentication?http#login) to get a new token
 #### Error Handling
 Errors are returned as JSON objects in the following format:
 ```
