@@ -1,5 +1,5 @@
 # Con Fusion
-It is a capstone project for [Full Stack Web Developer Udacity Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044). This app is inspired form [NodeJS Coursera Course](https://www.coursera.org/learn/server-side-nodejs)
+It is a capstone project for [Full Stack Web Developer Udacity Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044). This app is inspired from [NodeJS Coursera Course](https://www.coursera.org/learn/server-side-nodejs)
 . Con Fusion is a restaurant and we want to implement its api from scratch. There are users which visit the restaurant, a chef and the director of the restaurant.
 
 ### Getting Started
